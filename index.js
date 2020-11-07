@@ -3,7 +3,7 @@ const path = require('path');
 const ytList = require('youtube-playlist');
 const ytdl = require('ytdl-core');
 
-const url = 'https://www.youtube.com/playlist?list=PLlrATfBNZ98dudnM48yfGUldqGD0S4FFb';
+const url = '';
 
 let dir, progress;
 
