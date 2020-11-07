@@ -4,23 +4,32 @@ const ytList = require('youtube-playlist');
 const ytdl = require('ytdl-core');
 
 const url = '';
+const beginFrom = 1;
 
 let dir, progress;
 
 ytList(url, ['name', 'url']).then((res) => {
-	fs.existsSync(res.data.name) || fs.mkdirSync(res.data.name);
-	dir = res.data.name;
+	const downloadDir = res.data.name.replace(/[^a-zA-Z0-9]/g, '');
+	fs.existsSync(downloadDir) || fs.mkdirSync(downloadDir);
+	dir = downloadDir;
 	console.log(`\n${res.data.playlist.length} videos found. Starting download...`);
 	main(res.data.playlist);
 });
 
 async function main(playlist) {
-	for (let i = 0; i < playlist.length; i++) {
-		if (playlist[i].isPrivate)
-			return console.error('\nPrivate video encountered. Cancelling download');
-		let name = `00${i + 1} - ${playlist[i].name}`;
-		console.log(`\n\nDownloading ${name}`);
-		await downloadVideo(name, playlist[i].url);
+	try {
+		for (let i = beginFrom - 1; i < playlist.length; i++) {
+			if (playlist[i].isPrivate)
+				return console.error('\nPrivate video encountered. Cancelling download');
+			let name = `00${i + 1} - ${playlist[i].name}`
+				.replace(/[:"\/\\]/g, '-')
+				.replace(/[?!']/g, '');
+			console.log(`\n\nDownloading ${name}`);
+			await downloadVideo(name, playlist[i].url);
+		}
+		console.log('\n\nDOWNLOAD FINISHED');
+	} catch (e) {
+		console.error(e);
 	}
 }
 
@@ -39,5 +48,6 @@ async function downloadVideo(name, url) {
 	ytStream.pipe(writeStream);
 	return new Promise((resolve, reject) => {
 		writeStream.on('finish', resolve);
+		writeStream.on('error', reject);
 	});
 }
