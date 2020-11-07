@@ -1,0 +1,11 @@
+{
+	"name": "ytdl-bulk",
+	"version": "1.0.0",
+	"main": "index.js",
+	"author": "Faisal Arshed",
+	"license": "MIT",
+	"dependencies": {
+		"youtube-playlist": "^1.0.4",
+		"ytdl-core": "^4.0.3"
+	}
+}
