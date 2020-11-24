@@ -3,7 +3,7 @@ const path = require('path');
 const getPlaylist = require('youtube-playlist-scraper');
 const ytdl = require('ytdl-core');
 
-const playlistId = 'PLlrATfBNZ98foTJPJ_Ev03o2oq3-GGOS2';
+const playlistId = '';
 const beginFrom = 1;
 const addPrefix = true;
 
