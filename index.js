@@ -1,28 +1,33 @@
 const fs = require('fs');
 const path = require('path');
-const ytList = require('youtube-playlist');
+const getPlaylist = require('youtube-playlist-scraper');
 const ytdl = require('ytdl-core');
 
-const url = '';
+const playlistId = 'PLlrATfBNZ98foTJPJ_Ev03o2oq3-GGOS2';
 const beginFrom = 1;
+const addPrefix = true;
 
 let dir, progress;
 
-ytList(url, ['name', 'url']).then((res) => {
-	const downloadDir = res.data.name.replace(/[^a-zA-Z0-9]/g, '');
-	fs.existsSync(downloadDir) || fs.mkdirSync(downloadDir);
-	dir = downloadDir;
-	console.log(`\n${res.data.playlist.length} videos found. Starting download...`);
-	main(res.data.playlist);
-});
+getPlaylist(playlistId)
+	.then((res) => {
+		const downloadDir = res.title.replace(/[^a-zA-Z0-9]/g, '');
+		fs.existsSync(downloadDir) || fs.mkdirSync(downloadDir);
+		dir = downloadDir;
+		console.log(`\n${res.playlist.length} videos found. Starting download...`);
+		main(res.playlist);
+	})
+	.catch((e) =>
+		console.error("Error ocurred while fetching your playlist. Make sure it's not private", e)
+	);
 
 async function main(playlist) {
 	try {
 		for (let i = beginFrom - 1; i < playlist.length; i++) {
-			if (playlist[i].isPrivate)
-				return console.error('\nPrivate video encountered. Cancelling download');
-			let name = `00${i + 1} - ${playlist[i].name}`
-				.replace(/[:"\/\\]/g, '-')
+			// if (playlist[i].isPrivate)
+			// 	return console.error('\nPrivate video encountered. Cancelling download');
+			let name = `${addPrefix ? i + 1 + ' - ' : ''}${playlist[i].name}`
+				.replace(/[:"|\/\\]/g, '-')
 				.replace(/[?!']/g, '');
 			console.log(`\n\nDownloading ${name}`);
 			await downloadVideo(name, playlist[i].url);
