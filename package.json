@@ -5,7 +5,7 @@
 	"author": "Faisal Arshed",
 	"license": "MIT",
 	"dependencies": {
-		"youtube-playlist-scraper": "^1.0.2",
-		"ytdl-core": "^4.0.3"
+		"youtube-playlist-scraper": "^2.1.1",
+		"ytdl-core": "^4.4.5"
 	}
 }

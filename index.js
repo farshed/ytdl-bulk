@@ -1,6 +1,6 @@
 const fs = require('fs');
 const path = require('path');
-const getPlaylist = require('youtube-playlist-scraper');
+const { scrapePlaylist } = require('youtube-playlist-scraper');
 const ytdl = require('ytdl-core');
 
 const playlistId = '';
@@ -9,7 +9,7 @@ const addPrefix = true;
 
 let dir, progress;
 
-getPlaylist(playlistId)
+scrapePlaylist(playlistId)
 	.then((res) => {
 		const downloadDir = res.title.replace(/[^a-zA-Z0-9]/g, '');
 		fs.existsSync(downloadDir) || fs.mkdirSync(downloadDir);
