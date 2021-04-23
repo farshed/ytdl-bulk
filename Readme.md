@@ -7,4 +7,4 @@ $ npm install
 $ node index.js
 ```
 
-Make sure that the playlist is public before downloading.
+Make sure that the playlist you're trying to download is public.
